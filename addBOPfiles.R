@@ -1,14 +1,17 @@
 library(openxlsx)
 
 # go to the folder.  assume below this folder is 'newmice' with new bop files, and 'masterfile' where the big xls is.
-setwd("/Users/fritzebner/Documents/R/Grace/newmice")
+setwd("/Users/fritzebner/Documents/R/Grace/temp/graceBOPprocessing/newmice/")
 
 # make a backup copy of master file
-nowstamp <- format(Sys.time(), "%Y-%m-%d_%H:%M:%s")
+nowstamp <- format(Sys.time(), "%Y-%m-%d_%H_%M_%s")
 masterfilename <- "../masterfiles/BlastAnimalOutcomes.xlsx"
-file.copy(masterfilename, paste0(masterfilename,nowstamp))
+file.copy(masterfilename, paste0(sub('\\.xlsx$','', masterfilename),nowstamp,".xlsx"))
 
-newfiles <- list.files(pattern="\\.csv$")
+# only take files > 210616
+newfiles <- list.files(pattern="\\BOP000.csv$")
+newdates <- as.Date(newfiles, format = "%y%m%d")
+newfiles <- newfiles[newdates > as.Date("2021-06-16")]
 for (f in newfiles) 
 {
   print(f)
@@ -35,5 +38,5 @@ for (f in newfiles)
   writeData(wb, sheet = "Master", master, colNames = T)
   saveWorkbook(wb, masterfilename, overwrite = T)
   # change name of file, so its not processed twice
-  file.rename(f, paste0(f,"processed"))
+  file.rename(f, paste0(sub('\\.csv$','', f),"processed.csv"))
 }
