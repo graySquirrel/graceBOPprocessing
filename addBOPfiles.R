@@ -1,5 +1,7 @@
 library(openxlsx)
 
+# To run, go to the folder where the R script is and run 'Rscript addBOPfiles.R'
+
 # assume you are running this script at the level where subdirectories masterfiles and "BOP outputs" exists
 bopfilefolder <- "BOP outputs"
 
