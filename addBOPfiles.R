@@ -23,11 +23,12 @@ if (length(newfiles) > 0)
   master <- read.xlsx(masterfilename, 1, detectDates = TRUE)
   for (f in newfiles)
   {
+    bopfilepath <- paste0(bopfilefolder,"/",f)
     print(paste("processing",f))
     # get date from filename
     thedate <- as.Date(f, format = "%y%m%d")
     # read in the bop file
-    df <- read.csv(paste0(bopfilefolder,"/",f), header = FALSE, stringsAsFactors = FALSE, fileEncoding="latin1")
+    df <- read.csv(bopfilepath, header = FALSE, stringsAsFactors = FALSE, fileEncoding="latin1")
     # get psi
     psi <- df[df$V1=="BOP","V2"]
     psi <- trimws(psi)
@@ -41,9 +42,9 @@ if (length(newfiles) > 0)
     master[newrownum,"Subject"] <- mousenum
     master[newrownum,"BOP.(psi)"] <- psi
     # change name of file, so its not processed twice
-    newf <- paste0(sub('\\.csv$','', f),"processed.csv")
-    print(paste("renaming",f,"to",newf))
-    file.rename(f, newf)
+    newf <- paste0(sub('\\.csv$','', bopfilepath),"processed.csv")
+    print(paste("renaming",bopfilepath,"to",newf))
+    file.rename(bopfilepath, newf)
   }
   # update xls and save it back out
   writeData(wb, sheet = "Master", master, colNames = T)
