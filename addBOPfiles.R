@@ -3,7 +3,7 @@ library(openxlsx)
 # To run, copy the R script to the folder and run 'Rscript addBOPfiles.R'
 
 # assume you are running this script at the level where subdirectories masterfiles and "BOP outputs" exists
-bopfilefolder <- "BOP outputs"
+bopfilefolder <- "."
 masterfilename <- "masterfiles/BlastAnimalOutcomes.xlsx"
 
 # only take files > 210616
