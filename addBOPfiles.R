@@ -61,6 +61,6 @@ if (length(newfiles) > 0)
   #writeData(wb, sheet = "Master", master, colNames = T)
   #saveWorkbook(wb, masterfilename, overwrite = T)
   write.xlsx(master, file = paste0(masterfilefolder,"/","newBops",nowstamp,".xlsx"))
-  write.csv(master, file = paste0(masterfilefolder,"/","newBops",nowstamp,".csv"),
-            row.names = FALSE, na="")
+  #write.csv(master, file = paste0(masterfilefolder,"/","newBops",nowstamp,".csv"),
+  #          row.names = FALSE, na="")
 }
