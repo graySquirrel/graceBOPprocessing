@@ -25,8 +25,8 @@ if (length(newfiles) > 0)
   #wb <- loadWorkbook(masterfilename)
   #master <- read.xlsx(masterfilename, 1, detectDates = TRUE)
   
-  master <- data.frame(matrix(ncol = 14, nrow=0))
-  columnNames <- c("Date","Subject","injury?","BOP Input (psi)", "BOP (psi)", 
+  master <- data.frame(matrix(ncol = 13, nrow=0))
+  columnNames <- c("Date","Subject","BOP Input (psi)", "BOP (psi)", 
                    "Outcome", "Measures (Experiments)","48h NS", "7 day NS",
                    "Actual Driver Pressure", "Still have", "","Filename", "Notes")
   colnames(master) <- columnNames
@@ -39,6 +39,10 @@ if (length(newfiles) > 0)
     thedate <- as.Date(f, format = "%y%m%d")
     # read in the bop file
     df <- read.csv(bopfilepath, header = FALSE, stringsAsFactors = FALSE, fileEncoding="latin1")
+    # get input pressure from 'Driver Set'
+    driverset <- df[df$V1=="Driver Set","V2"]
+    driverset <- trimws(driverset)
+    driverset <- substr(driverset, start=1,stop=(nchar(driverset) - 4))
     # get psi
     psi <- df[df$V1=="BOP","V2"]
     psi <- trimws(psi)
@@ -50,6 +54,7 @@ if (length(newfiles) > 0)
     newrownum <- dim(master)[1] + 1
     master[newrownum,"Date"] <- difftime(thedate, "1899-12-30", units = "days") + 1
     master[newrownum,"Subject"] <- mousenum
+    master[newrownum,"BOP Input (psi)"] <- driverset
     master[newrownum,"BOP (psi)"] <- psi
     master[newrownum, "Notes"] <- notes
     # change name of file, so its not processed twice
